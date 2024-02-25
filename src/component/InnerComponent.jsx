@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 import data from "../file/large-file.json";
 
-
+// heavy computational task
 function getDataLength(data) {
+    console.log("Rendering Heavy Computational Task")
     let count = 0;
     for( let i = 0; i < data.length; i++ ) count++;
     return count;
 }
 
-
-
 // Inner component
 const InnerComponent = (props) => {
     
-    const totalData = getDataLength(data);
+    // Memoize the heavy computation to avoid re-executing it on every render
+    const totalData = useMemo(() => getDataLength(data), [] );
 
     return (
         <div>
