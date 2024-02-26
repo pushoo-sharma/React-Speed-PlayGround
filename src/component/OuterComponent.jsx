@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import InnerComponent from './InnerComponent';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
+
+// Lazy load InnerComponent
+const LazyInnerComponent = lazy(() => import('./InnerComponent'));
 
 // Outer component
 const OuterComponent = () => {
@@ -14,7 +16,9 @@ const OuterComponent = () => {
       <h1>Outer Component</h1>
       <p>Count: {count}</p>
       <button className="button" onClick={incrementCount}>Increment Count</button>
-      <InnerComponent />
+      <Suspense fallback={<div>Loading...</div>}>
+        <LazyInnerComponent />
+      </Suspense>
     </div>
   );
 };
