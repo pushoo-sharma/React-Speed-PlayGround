@@ -1,5 +1,5 @@
 // Import React and useMemo hook from react module
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 
 // Import large-file.json data
 import data from "../file/large-file.json";
@@ -12,15 +12,22 @@ function getDataLength(data) {
     return count;
 }
 
-// Event handler function for datalog loaded event
-function handleDatalog() {
-    console.log('Datalog loaded');
-}
-
 // Inner component
 const InnerComponent = (props) => {
-    // Attach event listener for datalog loaded event
-    window.addEventListener('load', handleDatalog);
+    
+    // Attach event listener for datalog loaded event using useEffect hook
+    useEffect(() => {
+        const handleDatalog = () => {
+            console.log('Datalog loaded');
+        };
+
+        window.addEventListener('load', handleDatalog);
+
+        // Cleanup function to remove the event listener when component unmounts
+        return () => {
+            window.removeEventListener('load', handleDatalog);
+        };
+    }, []);
     
     // Memoize the heavy computation to avoid re-executing it on every render
     const totalData = useMemo(() => getDataLength(data), [] );
